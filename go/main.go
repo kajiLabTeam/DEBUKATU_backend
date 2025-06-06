@@ -16,5 +16,5 @@ func main() {
 		versionEngine.PUT("/weight/:userId", controller.UpdateWeightHandler)
 	}
 
-	r.Run(":8080")
+	r.Run(":8090")
 }
