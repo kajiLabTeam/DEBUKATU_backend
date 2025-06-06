@@ -16,7 +16,7 @@ services:
 
   api:
     build:
-      context: .
+      context: ./go
       dockerfile: Dockerfile
     container_name: ${BACKEND_CONTAINER_NAME}
     ports:
