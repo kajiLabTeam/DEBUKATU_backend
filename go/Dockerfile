@@ -5,15 +5,18 @@ FROM golang:1.23.3
 WORKDIR /app
 
 # go.mod と go.sum をコピー（依存関係を先にインストールするため）
-# COPY go.mod ./app/
-# COPY go.sum ./app/
-# RUN go mod download
+COPY go.mod ./
+COPY go.sum ./
+RUN go mod download
 
 # ソースコードをコピー
 COPY . .
 
+# アプリケーションをビルド
+RUN go build -o main .
+
 # ポートの指定（必要であれば）
-EXPOSE 8080
+EXPOSE 8090
 
 # 起動コマンド
-CMD ["go", "run", "main.go"]
+CMD ["./main"]
