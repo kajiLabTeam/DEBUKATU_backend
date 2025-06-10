@@ -3,7 +3,7 @@ CREATE TABLE User_Data (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100),
     deleted BOOLEAN DEFAULT FALSE
-);
+)CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- モデル（目標）データ：ユーザーの目標体重・期間
 CREATE TABLE Model_Data (

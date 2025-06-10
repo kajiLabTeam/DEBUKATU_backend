@@ -1,5 +1,8 @@
 services:
   db:
+    build:
+      context: ./db
+      dockerfile: db/Dockerfile
     image: mysql:8.0
     container_name: ${DB_CONTAINER_NAME}
     restart: always
@@ -12,23 +15,20 @@ services:
       - "${DB_PORT}:3306"
     volumes:
       - db-data:/var/lib/mysql
-      - ./mysql:/docker-entrypoint-initdb.d # ← 初期スキーマ用SQLファイルをここに置くと自動実行されます
+      - ./mysql:/docker-entrypoint-initdb.d
+      - ./mysql/db.conf:/etc/db/conf.d/db.conf
+    networks:
+      - debukatu_network
 
   api:
     build:
-      context: ./go
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: go/Dockerfile
     container_name: ${BACKEND_CONTAINER_NAME}
     ports:
       - "${BACKEND_PORT}:${BACKEND_PORT}"
     depends_on:
       - db
-    environment:
-      DB_HOST: ${DB_CONTAINER_NAME}
-      DB_PORT: ${DB_PORT}
-      DB_USER: ${MYSQL_USER}
-      DB_PASSWORD: ${MYSQL_PASSWORD}
-      DB_NAME: ${MYSQL_DATABASE}
     networks:
       - debukatu_network
 

@@ -5,12 +5,11 @@ FROM golang:1.23.3
 WORKDIR /app
 
 # go.mod と go.sum をコピー（依存関係を先にインストールするため）
-COPY go.mod ./
-COPY go.sum ./
+COPY app/go.mod app/go.sum ./
 RUN go mod download
 
-# ソースコードをコピー
-COPY . .
+# ソースコードコピー
+COPY go/app/ .
 
 # アプリケーションをビルド
 RUN go build -o main .
