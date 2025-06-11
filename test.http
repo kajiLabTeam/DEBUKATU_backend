@@ -9,7 +9,7 @@ GET {{baseURL}}/api/users
 GET {{baseURL}}/api/users?id=1
 
 ### ユーザ情報（名前）の登録
-POST {{baseURL}}/api/users?name=miho
+POST {{baseURL}}/api/users?name=ayaka
 
 ### ユーザID=1の情報変更
 PUT {{baseURL}}/api/users/1?name=ayaka
