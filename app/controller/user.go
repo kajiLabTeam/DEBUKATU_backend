@@ -9,11 +9,18 @@ import (
 )
 
 func GetUserHandler(c *gin.Context) {
-	var userID int64
-	userID, err := strconv.ParseInt(c.Query("id"), 10, 64)
-	if err != nil {
-		// c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "user_id Bad Request"})
-		userID = 0
+	query := c.Query("id")
+	var userID int64 = 0
+
+	//id があれば int64 に変換
+	if query != "" {
+		parsed, err := strconv.ParseInt(query, 10, 64)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest,
+				gin.H{"error": "id must be a number"})
+			return
+		}
+		userID = parsed
 	}
 	userService := service.UserService{}
 	users, err := userService.GetUsers(userID)

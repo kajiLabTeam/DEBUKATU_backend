@@ -9,16 +9,15 @@ import (
 type UserService struct{}
 
 func (UserService) GetUsers(userId int64) ([]model.User, error) {
-	db := lib.DB
+	users := []model.User{}
 
-	users := make([]model.User, 0)
-
-	query := db.Table("user_data").Where("deleted = ?", false)
+	query := lib.DB.Model(&model.User{}).Where("deleted = ?", false)
 	if userId > 0 {
 		query = query.Where("user_id = ?", userId)
 	}
 
 	if err := query.Find(&users).Error; err != nil {
+		log.Printf("DBクエリエラー: %v", err)
 		return nil, err
 	}
 
@@ -27,18 +26,17 @@ func (UserService) GetUsers(userId int64) ([]model.User, error) {
 
 func (UserService) CreateUser(name string) (int64, error) {
 	log.Printf("lib.DB is nil? %v\n", lib.DB == nil)
-	db := lib.DB
 
 	user := model.User{
 		Name:    name,
 		Deleted: false,
 	}
 
-	if err := db.Create(&user).Error; err != nil {
+	if err := lib.DB.Create(&user).Error; err != nil {
 		return 0, err
 	}
 
-	return int64(user.ID), nil
+	return user.UserId, nil
 }
 
 func (UserService) UpdateUser(userId int64, userName string) error {
