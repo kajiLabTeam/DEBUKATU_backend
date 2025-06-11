@@ -19,6 +19,9 @@ services:
     command: go run main.go
 
   db:
+    build:
+      context: ./docker/db/
+      dockerfile: Dockerfile
     image: mysql:8.0
     container_name: mysql-db
     restart: always
@@ -31,17 +34,27 @@ services:
       - "3306:3306"
     volumes:
       - db-data:/var/lib/mysql
-      - ./mysql:/docker-entrypoint-initdb.d # ← 初期スキーマ用SQLファイルをここに置くと自動実行されます
+      - ./mysql:/docker-entrypoint-initdb.d
+      - ./mysql/db.conf:/etc/db/conf.d/db.conf
+    networks:
+      - debukatu_network
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: myadmin
-    restart: always
+  api:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    env_file:
+      - .env
+    container_name: ${BACKEND_CONTAINER_NAME}
     ports:
       - "8081:80"
     environment:
-      PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_HOST: "${MYSQL_HOST}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+    networks:
+      - debukatu_network
 
 volumes:
   db-data:

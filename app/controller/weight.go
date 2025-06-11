@@ -6,3 +6,5 @@ import (
 
 func GetWeightHandler(c *gin.Context) {
 }
+func UpdateWeightHandler(c *gin.Context) {
+}
