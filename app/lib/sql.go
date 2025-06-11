@@ -2,48 +2,36 @@ package lib
 
 import (
 	"fmt"
+	"kajiLabTeam/DEBUKATU/model"
+	"log"
 	"os"
-	"time"
+	"sync"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
-func SqlConnect() (database *gorm.DB) {
-	var db *gorm.DB
-	var err error
+var (
+	once sync.Once
+	DB   *gorm.DB
+)
 
-	// 環境変数から値を取得
-	user := os.Getenv("MYSQL_USER")
-	password := os.Getenv("MYSQL_PASSWORD")
-	protocol := os.Getenv("MYSQL_PROTOCOL")
-	dbname := os.Getenv("MYSQL_DATABASE")
-
-	dsn := fmt.Sprintf("%s:%s@%s/%s?charset=utf8&parseTime=true&loc=Asia%%2FTokyo", user, password, protocol, dbname)
-	// GORMのDialectorを作成
-	dialector := mysql.Open(dsn)
-
-	// log.Default().Println(dsn)
-
-	if db, err = gorm.Open(dialector); err != nil {
-		db = connect(dialector, 10)
-	}
-	fmt.Println("db connected!!")
-
-	return db
-}
-
-func connect(dialector gorm.Dialector, count uint) *gorm.DB {
-	var err error
-	var db *gorm.DB
-	if db, err = gorm.Open(dialector); err != nil {
-		if count > 1 {
-			time.Sleep(time.Second * 2)
-			count--
-			fmt.Printf("retry... count:%v\n", count)
-			return connect(dialector, count)
+func InitDB() *gorm.DB {
+	once.Do(func() {
+		dsn := fmt.Sprintf(
+			"%s:%s@tcp(%s:%s)/%s",
+			os.Getenv("MYSQL_USER"),
+			os.Getenv("MYSQL_PASSWORD"),
+			os.Getenv("MYSQL_HOST"), // 例: localhost:3306
+			os.Getenv("MYSQL_PORT"),
+			os.Getenv("MYSQL_DATABASE"),
+		)
+		db, err := gorm.Open(mysql.Open(dsn))
+		if err != nil {
+			log.Fatalf("DB connect error: %v", err)
 		}
-		panic(err.Error())
-	}
-	return (db)
+		db.AutoMigrate(&model.User{})
+		DB = db
+	})
+	return DB
 }

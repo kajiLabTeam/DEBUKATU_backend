@@ -8,6 +8,7 @@ import (
 
 func Router() {
 	r := gin.Default()
+	r.Use(gin.Logger(), gin.Recovery())
 
 	versionEngine := r.Group("/api")
 	{
@@ -19,4 +20,5 @@ func Router() {
 	}
 
 	r.Run(":8090")
+
 }

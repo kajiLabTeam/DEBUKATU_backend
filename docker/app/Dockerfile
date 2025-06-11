@@ -9,7 +9,8 @@ COPY app/go.mod app/go.sum ./
 RUN go mod download
 
 # ソースコードコピー
-COPY go/app/ .
+COPY app/ .
+COPY .env .
 
 # アプリケーションをビルド
 RUN go build -o main .
