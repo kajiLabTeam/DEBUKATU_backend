@@ -39,10 +39,22 @@ func (UserService) CreateUser(name string) (int64, error) {
 	return user.UserId, nil
 }
 
-func (UserService) UpdateUser(userId int64, userName string) error {
+func (UserService) UpdateUser(userId int64, name string, deleted *bool) error {
 	db := lib.DB
 
+	updates := map[string]interface{}{}
+	if name != "" {
+		updates["name"] = name
+	}
+	if deleted != nil {
+		updates["deleted"] = *deleted
+	}
+
+	if len(updates) == 0 {
+		return nil // 何も更新しない
+	}
+
 	return db.Model(&model.User{}).
-		Where("user_id = ? AND deleted = ?", userId, false).
-		Update("name", userName).Error
+		Where("user_id = ? AND deleted = false", userId).
+		Updates(updates).Error
 }

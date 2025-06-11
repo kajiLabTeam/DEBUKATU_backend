@@ -14,7 +14,7 @@ func Router() {
 	{
 		versionEngine.GET("/users", controller.GetUserHandler)
 		versionEngine.POST("/users", controller.CreateUserHandler)
-		versionEngine.PUT("/users", controller.UpdateUserHandler)
+		versionEngine.PUT("/users/:id", controller.UpdateUserHandler)
 		versionEngine.GET("/weight/:userId", controller.GetWeightHandler)
 		versionEngine.PUT("/weight/:userId", controller.UpdateWeightHandler)
 	}
