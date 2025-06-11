@@ -9,16 +9,15 @@ import (
 type UserService struct{}
 
 func (UserService) GetUsers(userId int64) ([]model.User, error) {
-	db := lib.DB
+	users := []model.User{}
 
-	users := make([]model.User, 0)
-
-	query := db.Table("user_data").Where("deleted = ?", false)
+	query := lib.DB.Model(&model.User{}).Where("deleted = ?", false)
 	if userId > 0 {
 		query = query.Where("user_id = ?", userId)
 	}
 
 	if err := query.Find(&users).Error; err != nil {
+		log.Printf("DBクエリエラー: %v", err)
 		return nil, err
 	}
 
@@ -27,24 +26,35 @@ func (UserService) GetUsers(userId int64) ([]model.User, error) {
 
 func (UserService) CreateUser(name string) (int64, error) {
 	log.Printf("lib.DB is nil? %v\n", lib.DB == nil)
-	db := lib.DB
 
 	user := model.User{
 		Name:    name,
 		Deleted: false,
 	}
 
-	if err := db.Create(&user).Error; err != nil {
+	if err := lib.DB.Create(&user).Error; err != nil {
 		return 0, err
 	}
 
-	return int64(user.ID), nil
+	return user.UserId, nil
 }
 
-func (UserService) UpdateUser(userId int64, userName string) error {
+func (UserService) UpdateUser(userId int64, name string, deleted *bool) error {
 	db := lib.DB
 
+	updates := map[string]interface{}{}
+	if name != "" {
+		updates["name"] = name
+	}
+	if deleted != nil {
+		updates["deleted"] = *deleted
+	}
+
+	if len(updates) == 0 {
+		return nil // 何も更新しない
+	}
+
 	return db.Model(&model.User{}).
-		Where("user_id = ? AND deleted = ?", userId, false).
-		Update("name", userName).Error
+		Where("user_id = ? AND deleted = false", userId).
+		Updates(updates).Error
 }

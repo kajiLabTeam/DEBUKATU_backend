@@ -9,11 +9,18 @@ import (
 )
 
 func GetUserHandler(c *gin.Context) {
-	var userID int64
-	userID, err := strconv.ParseInt(c.Query("id"), 10, 64)
-	if err != nil {
-		// c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "user_id Bad Request"})
-		userID = 0
+	query := c.Query("id")
+	var userID int64 = 0
+
+	//id があれば int64 に変換
+	if query != "" {
+		parsed, err := strconv.ParseInt(query, 10, 64)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest,
+				gin.H{"error": "id must be a number"})
+			return
+		}
+		userID = parsed
 	}
 	userService := service.UserService{}
 	users, err := userService.GetUsers(userID)
@@ -31,14 +38,35 @@ type UpdateUserRequest struct {
 }
 
 func UpdateUserHandler(c *gin.Context) {
-	var req UpdateUserRequest
-	if err := c.ShouldBindQuery(&req); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid input"})
+	userIdPass := c.Param("id")
+	userId, err := strconv.ParseInt(userIdPass, 10, 64)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid user ID"})
 		return
 	}
 
+	// クエリパラメータ取得
+	name := c.Query("name")
+	deletedStr := c.Query("deleted")
+
+	// どちらも指定されていない場合はエラー
+	if name == "" && deletedStr == "" {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "no update parameter provided"})
+		return
+	}
+
+	var deleted *bool
+	if deletedStr != "" {
+		val, err := strconv.ParseBool(deletedStr)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid deleted value"})
+			return
+		}
+		deleted = &val
+	}
+
 	userService := service.UserService{}
-	if err := userService.UpdateUser(req.ID, req.Name); err != nil {
+	if err := userService.UpdateUser(userId, name, deleted); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to update user"})
 		return
 	}
