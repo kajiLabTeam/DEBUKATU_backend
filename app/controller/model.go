@@ -11,6 +11,10 @@ import (
 func GetModelHandler(c *gin.Context) {
 	userIDPass := c.Param("userId")
 	userID, err := strconv.ParseInt(userIDPass, 10, 64)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid user ID"})
+		return
+	}
 
 	modelService := service.ModelService{}
 	models, err := modelService.GetModels(userID)
