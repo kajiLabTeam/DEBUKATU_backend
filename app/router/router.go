@@ -19,8 +19,11 @@ func Router() {
 		versionEngine.GET("/model/:userId", controller.GetModelHandler)
 		versionEngine.POST("/model/:userId", controller.CreateModelHandler)
 
-		versionEngine.GET("/weight/:modelId", controller.GetWeightHandler)
-		// versionEngine.POST("/weight/:modelId", controller.CreateWeightHandler)
+		versionEngine.GET("/weight/:userId/:modelId", controller.GetWeightHandler)
+		versionEngine.POST("/weight/:userId/:modelId", controller.CreateWeightHandler)
+
+		// 	versionEngine.GET("/calorie/:userId/:modelId", controller.GetWeightHandler)
+		// 	versionEngine.POST("/calorie/:userId/:modelId", controller.CreateWeightHandler)
 	}
 
 	r.Run(":8090")
