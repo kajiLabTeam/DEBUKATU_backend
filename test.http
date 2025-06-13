@@ -9,10 +9,10 @@ GET {{baseURL}}/api/users
 GET {{baseURL}}/api/users?id=1
 
 ### ユーザ情報（名前）の登録
-POST {{baseURL}}/api/users?name=test
+POST {{baseURL}}/api/users?name=test2
 
 ### ユーザID=1の情報変更
-PUT {{baseURL}}/api/users/3?name=test3
+PUT {{baseURL}}/api/users/1?name=test3
 ### ユーザID=1の削除
 PUT {{baseURL}}/api/users/1?deleted=true
 
@@ -23,7 +23,7 @@ PUT {{baseURL}}/api/users/1?deleted=true
 GET {{baseURL}}/api/model/1
 
 ### ユーザID=1の体重目標の登録
-POST {{baseURL}}/api/model/1?weight=50&days=90
+POST {{baseURL}}/api/model/1?weight=50&days=70
 
 
 # Weight_Data
@@ -32,13 +32,13 @@ POST {{baseURL}}/api/model/1?weight=50&days=90
 GET {{baseURL}}/api/weight/1/2
 
 ### ユーザID=1の体重情報の登録（現在体重と対応するmodel_idは必須）
-POST {{baseURL}}/api/weight/1/2?current=42
+POST {{baseURL}}/api/weight/1/2?current=49
 
 
 # Calorie_Data
 
-### ユーザID=1のweight_id=2に対応する摂取カロリーの履歴の取得
+### modelId=1のweight_id=2に対応する摂取カロリーの履歴の取得
 GET {{baseURL}}/api/calorie/1/2
 
-### ユーザID=1のweight_id=2に対応する摂取カロリーの登録(current_calorieは必須)
-POST {{baseURL}}/api/calorie/1/2?current=1000
+### modelId=1のweight_id=2に対応する摂取カロリーの登録
+POST {{baseURL}}/api/calorie/1/2?must=500&current=800
