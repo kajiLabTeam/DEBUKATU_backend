@@ -8,7 +8,7 @@ CREATE TABLE Model_Data (
     model_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     model_weight FLOAT,
-    length_of_month FLOAT,
+    length_of_days FLOAT,
     created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES User_Data(user_id)
 );

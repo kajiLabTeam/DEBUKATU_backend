@@ -19,13 +19,13 @@ func (ModelService) GetModels(userId int64) ([]model.Model, error) {
 	return models, nil
 }
 
-func (ModelService) CreateModel(userId int64, weight float64, month float64) (int64, error) {
+func (ModelService) CreateModel(userId int64, weight float64, days float64) (int64, error) {
 	log.Printf("lib.DB is nil? %v\n", lib.DB == nil)
 
 	model := model.Model{
-		UserId:        userId,
-		ModelWeight:   weight,
-		LengthOfMonth: month,
+		UserId:       userId,
+		ModelWeight:  weight,
+		LengthOfDays: days,
 	}
 
 	if err := lib.DB.Create(&model).Error; err != nil {

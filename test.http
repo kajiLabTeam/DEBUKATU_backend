@@ -23,7 +23,7 @@ PUT {{baseURL}}/api/users/1?deleted=true
 GET {{baseURL}}/api/model/1
 
 ### ユーザID=1の体重目標の登録
-POST {{baseURL}}/api/model/1?weight=50&month=3
+POST {{baseURL}}/api/model/1?weight=50&days=90
 
 
 # Weight_Data

@@ -39,15 +39,15 @@ func CreateModelHandler(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid weight"})
 		return
 	}
-	monthQuery := c.Query("month")
-	month, err := strconv.ParseFloat(monthQuery, 64)
+	dayQuery := c.Query("days")
+	days, err := strconv.ParseFloat(dayQuery, 64)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid month"})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid day"})
 		return
 	}
 
 	modelService := service.ModelService{}
-	id, err := modelService.CreateModel(userID, weight, month)
+	id, err := modelService.CreateModel(userID, weight, days)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to create user"})
 		return
