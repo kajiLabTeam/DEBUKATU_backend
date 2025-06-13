@@ -20,7 +20,7 @@ var (
 func InitDB() *gorm.DB {
 	once.Do(func() {
 		dsn := fmt.Sprintf(
-			"%s:%s@tcp(%s:%s)/%s",
+			"%s:%s@tcp(%s:%s)/%s?parseTime=true",
 			os.Getenv("MYSQL_USER"),
 			os.Getenv("MYSQL_PASSWORD"),
 			os.Getenv("MYSQL_HOST"), // 例: localhost:3306
@@ -33,7 +33,7 @@ func InitDB() *gorm.DB {
 		if err != nil {
 			log.Fatalf("DB connect error: %v", err)
 		}
-		db.AutoMigrate(&model.User{})
+		db.AutoMigrate(&model.User{}, &model.Model{}, &model.Weight{})
 		DB = db
 	})
 	return DB

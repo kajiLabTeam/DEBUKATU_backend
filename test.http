@@ -9,10 +9,10 @@ GET {{baseURL}}/api/users
 GET {{baseURL}}/api/users?id=1
 
 ### ユーザ情報（名前）の登録
-POST {{baseURL}}/api/users?name=ayaka
+POST {{baseURL}}/api/users?name=test
 
 ### ユーザID=1の情報変更
-PUT {{baseURL}}/api/users/1?name=test2
+PUT {{baseURL}}/api/users/3?name=test3
 ### ユーザID=1の削除
 PUT {{baseURL}}/api/users/1?deleted=true
 
@@ -20,70 +20,25 @@ PUT {{baseURL}}/api/users/1?deleted=true
 # Model_Data
 
 ### ユーザID=1の体重目標の取得
-GET {{baseURL}}api/model/1
+GET {{baseURL}}/api/model/1
 
 ### ユーザID=1の体重目標の登録
-POST {{baseURL}}api/model/1?model=45&month=3
+POST {{baseURL}}/api/model/1?weight=50&days=90
 
 
 # Weight_Data
 
-### ユーザID=1の体重情報の取得
-GET {{baseURL}}/api/weight/1
+### ユーザID=1のモデルID=2に対応する体重情報の取得
+GET {{baseURL}}/api/weight/1/2
 
 ### ユーザID=1の体重情報の登録（現在体重と対応するmodel_idは必須）
-POST {{baseURL}}/api/weight/1?current=40&model=50&month=2
+POST {{baseURL}}/api/weight/1/2?current=42
 
 
 # Calorie_Data
 
 ### ユーザID=1のweight_id=2に対応する摂取カロリーの履歴の取得
-GET {{baseURL}}api/calorie/1/2
+GET {{baseURL}}/api/calorie/1/2
 
 ### ユーザID=1のweight_id=2に対応する摂取カロリーの登録(current_calorieは必須)
-POST {{baseURL}}api/calorie/1/2?current=1000
-=======
-@baseURL= http://localhost:8090
-
-# User_Data
-
-### ユーザ一覧取得(削除済みユーザ情報は渡さない)
-GET {{baseURL}}/api/users
-
-### ユーザID=1の情報取得
-GET {{baseURL}}/api/users?id=1
-
-### ユーザ情報（名前）の登録
-POST {{baseURL}}/api/users?name=ayaka
-
-### ユーザID=1の情報変更
-PUT {{baseURL}}/api/users/1?name=test2
-### ユーザID=1の削除
-PUT {{baseURL}}/api/users/1?deleted=true
-
-
-# Model_Data
-
-### ユーザID=1の体重目標の取得
-GET {{baseURL}}api/model/1
-
-### ユーザID=1の体重目標の登録
-POST {{baseURL}}api/model/1?model=45&month=3
-
-
-# Weight_Data
-
-### ユーザID=1の体重情報の取得
-GET {{baseURL}}/api/weight/1
-
-### ユーザID=1の体重情報の登録（現在体重と対応するmodel_idは必須）
-POST {{baseURL}}/api/weight/1?current=40&model=50&month=2
-
-
-# Calorie_Data
-
-### ユーザID=1のweight_id=2に対応する摂取カロリーの履歴の取得
-GET {{baseURL}}api/calorie/1/2
-
-### ユーザID=1のweight_id=2に対応する摂取カロリーの登録(current_calorieは必須)
-POST {{baseURL}}api/calorie/1/2?current=1000
+POST {{baseURL}}/api/calorie/1/2?current=1000
