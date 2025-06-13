@@ -60,5 +60,5 @@ func CreateCalorieHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"model_id": id})
+	c.JSON(http.StatusCreated, gin.H{"calorie_id": id})
 }
