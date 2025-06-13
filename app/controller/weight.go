@@ -43,7 +43,7 @@ func CreateWeightHandler(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid model ID"})
 		return
 	}
-	weightQuery := c.Query("weight")
+	weightQuery := c.Query("current")
 	weight, err := strconv.ParseFloat(weightQuery, 64)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid weight"})
