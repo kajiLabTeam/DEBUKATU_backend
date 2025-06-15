@@ -19,5 +19,6 @@ func main() {
 	log.Println("MYSQL_HOST:", os.Getenv("MYSQL_HOST"))
 
 	lib.InitDB()
+	
 	router.Router()
 }
