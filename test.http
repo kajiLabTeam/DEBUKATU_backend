@@ -8,8 +8,13 @@ GET {{baseURL}}/api/users
 ### ユーザID=1の情報取得
 GET {{baseURL}}/api/users?id=1
 
+### ユーザID=1の情報取得
+GET {{baseURL}}/api/users?name=test&password=pass
+
 ### ユーザ情報（名前）の登録
-POST {{baseURL}}/api/users?name=test2
+POST {{baseURL}}/api/users?name=test&password=pass&age=20&height=150
+
+### ユーザ
 
 ### ユーザID=1の情報変更
 PUT {{baseURL}}/api/users/1?name=test3

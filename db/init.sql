@@ -1,6 +1,9 @@
 CREATE TABLE User_Data (
     user_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100),
+    password VARCHAR(30),
+    age INT,
+    height FLOAT,
     deleted BOOLEAN DEFAULT FALSE
 )CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
