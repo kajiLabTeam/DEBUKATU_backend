@@ -9,27 +9,52 @@ import (
 )
 
 func GetUserHandler(c *gin.Context) {
-	query := c.Query("id")
-	var userID int64 = 0
+	idQuery := c.Query("id")
+	nameQuery := c.Query("name")
+	passQuery := c.Query("password")
 
-	//id があれば int64 に変換
-	if query != "" {
-		parsed, err := strconv.ParseInt(query, 10, 64)
+	userService := service.UserService{}
+
+	if idQuery != "" {
+		parsedID, err := strconv.ParseInt(idQuery, 10, 64)
 		if err != nil {
-			c.AbortWithStatusJSON(http.StatusBadRequest,
-				gin.H{"error": "id must be a number"})
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "id must be a number"})
 			return
 		}
-		userID = parsed
-	}
-	userService := service.UserService{}
-	users, err := userService.GetUsers(userID)
-	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get users"})
+
+		users, err := userService.GetUsers(parsedID)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get users"})
+			return
+		}
+		c.JSON(http.StatusOK, users)
 		return
 	}
 
-	c.JSON(http.StatusOK, users)
+	// クエリが全て空 → GetUsers(0)
+	if nameQuery == "" && passQuery == "" {
+		users, err := userService.GetUsers(0)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get users"})
+			return
+		}
+		c.JSON(http.StatusOK, users)
+		return
+	}
+
+	// name と password の両方がある場合 → GetUser
+	if nameQuery != "" && passQuery != "" {
+		user, err := userService.GetUser(nameQuery, passQuery)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "invalid name or password"})
+			return
+		}
+		c.JSON(http.StatusOK, user)
+		return
+	}
+
+	// name か password のどちらか一方だけ → エラー
+	c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "both name and password are required"})
 }
 
 type UpdateUserRequest struct {
@@ -80,9 +105,23 @@ func CreateUserHandler(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "name is required"})
 		return
 	}
+	password := c.Query("password")
+	ageQuery := c.Query("age")
+	age, err := strconv.ParseInt(ageQuery, 10, 64)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "age is required"})
+		return
+	}
+
+	heightQuery := c.Query("height")
+	height, err := strconv.ParseFloat(heightQuery, 64)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "height is required"})
+		return
+	}
 
 	userService := service.UserService{}
-	id, err := userService.CreateUser(name)
+	id, err := userService.CreateUser(name, password, age, height)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to create user"})
 		return
