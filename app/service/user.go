@@ -23,13 +23,30 @@ func (UserService) GetUsers(userId int64) ([]model.User, error) {
 
 	return users, nil
 }
+func (UserService) GetUser(name string, password string) ([]model.User, error) {
+	users := []model.User{}
 
-func (UserService) CreateUser(name string) (int64, error) {
+	query := lib.DB.Model(&model.User{}).Where("deleted = ?", false)
+
+	query = query.Where("name = ?", name).Where("password=?", password)
+
+	if err := query.Find(&users).Error; err != nil {
+		log.Printf("DBクエリエラー: %v", err)
+		return nil, err
+	}
+
+	return users, nil
+}
+
+func (UserService) CreateUser(name string, password string, age int64, height float64) (int64, error) {
 	log.Printf("lib.DB is nil? %v\n", lib.DB == nil)
 
 	user := model.User{
-		Name:    name,
-		Deleted: false,
+		Name:     name,
+		Password: password,
+		Age:      age,
+		Height:   height,
+		Deleted:  false,
 	}
 
 	if err := lib.DB.Create(&user).Error; err != nil {
