@@ -23,8 +23,8 @@ func (WeightService) CreateWeight(userId int64, modelId int64, weight float64) (
 	log.Printf("lib.DB is nil? %v\n", lib.DB == nil)
 
 	model := model.Weight{
-		UserId:        userId,
 		ModelId:       modelId,
+		UserId:        userId,
 		CurrentWeight: weight,
 	}
 
