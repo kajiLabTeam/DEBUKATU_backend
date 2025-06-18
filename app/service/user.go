@@ -38,7 +38,7 @@ func (UserService) GetUser(name string, password string) ([]model.User, error) {
 	return users, nil
 }
 
-func (UserService) CreateUser(name string, password string, age int64, height float64) (int64, error) {
+func (UserService) CreateUser(name string, password string, age int64, height float64, gender string) (int64, error) {
 	log.Printf("lib.DB is nil? %v\n", lib.DB == nil)
 
 	user := model.User{
@@ -46,6 +46,7 @@ func (UserService) CreateUser(name string, password string, age int64, height fl
 		Password: password,
 		Age:      age,
 		Height:   height,
+		Gender:   gender,
 		Deleted:  false,
 	}
 

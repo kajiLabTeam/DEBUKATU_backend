@@ -107,6 +107,11 @@ func CreateUserHandler(c *gin.Context) {
 	}
 	password := c.Query("password")
 	ageQuery := c.Query("age")
+	gender := c.Query("gender")
+	if gender != "woman" && gender != "man" {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "gender is required"})
+		return
+	}
 	age, err := strconv.ParseInt(ageQuery, 10, 64)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "age is required"})
@@ -121,7 +126,7 @@ func CreateUserHandler(c *gin.Context) {
 	}
 
 	userService := service.UserService{}
-	id, err := userService.CreateUser(name, password, age, height)
+	id, err := userService.CreateUser(name, password, age, height, gender)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to create user"})
 		return

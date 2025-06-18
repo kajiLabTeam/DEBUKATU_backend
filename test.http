@@ -12,7 +12,7 @@ GET {{baseURL}}/api/users?id=1
 GET {{baseURL}}/api/users?name=test&password=pass
 
 ### ユーザ情報（名前）の登録
-POST {{baseURL}}/api/users?name=test&password=pass&age=20&height=150
+POST {{baseURL}}/api/users?name=test&password=pass&age=20&height=150&gender=woman
 
 ### ユーザ
 

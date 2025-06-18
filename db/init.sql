@@ -4,6 +4,7 @@ CREATE TABLE User_Data (
     password VARCHAR(30),
     age INT,
     height FLOAT,
+    man BOOLEAN,
     deleted BOOLEAN DEFAULT FALSE
 )CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
