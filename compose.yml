@@ -18,7 +18,7 @@ services:
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${MYSQL_ROOT_PASSWORD}"]
       interval: 20s
-      retries: 5
+      retries: 10
     volumes:
       - db-data:/var/lib/mysql
       - ./mysql:/docker-entrypoint-initdb.d
