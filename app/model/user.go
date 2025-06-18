@@ -6,6 +6,7 @@ type User struct {
 	Password string  `gorm:"column:password"`
 	Age      int64   `gorm:"column:age"`
 	Height   float64 `gorm:"column:height"`
+	Gender   string  `gorm:"column:gender"`
 	Deleted  bool    `gorm:"column:deleted"`
 }
 
