@@ -19,13 +19,14 @@ func (WeightService) GetWeights(userId int64, modelId int64) ([]model.Weight, er
 	return weights, nil
 }
 
-func (WeightService) CreateWeight(userId int64, modelId int64, weight float64) (int64, error) {
+func (WeightService) CreateWeight(userId int64, modelId int64, weight float64, calorie float64) (int64, error) {
 	log.Printf("lib.DB is nil? %v\n", lib.DB == nil)
 
 	model := model.Weight{
 		ModelId:       modelId,
 		UserId:        userId,
 		CurrentWeight: weight,
+		Kisotaisya:    calorie,
 	}
 
 	if err := lib.DB.Create(&model).Error; err != nil {
