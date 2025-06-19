@@ -7,6 +7,7 @@ type Weight struct {
 	ModelId       int64     `gorm:"column:model_id"`
 	UserId        int64     `gorm:"column:user_id"`
 	CurrentWeight float64   `gorm:"column:current_weight"`
+	Kisotaisya    float64   `gorm:"column:kisotaisya"`
 	CreatedDate   time.Time `gorm:"column:created_date;type:datetime;autoCreateTime"`
 }
 

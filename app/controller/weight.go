@@ -50,12 +50,19 @@ func CreateWeightHandler(c *gin.Context) {
 		return
 	}
 
+	userService := service.UserService{}
+	calorie, err := userService.Kisotaisya(userID, weight)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid bmr"})
+		return
+	}
+
 	weightService := service.WeightService{}
-	id, err := weightService.CreateWeight(userID, modelID, weight)
+	id, err := weightService.CreateWeight(userID, modelID, weight, calorie)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to create user"})
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"weight_id": id})
+	c.JSON(http.StatusCreated, gin.H{"weight_id": id, "bmr": calorie})
 }

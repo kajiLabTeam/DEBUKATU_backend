@@ -10,7 +10,7 @@ func Router() {
 	r := gin.Default()
 
 	r.Use(func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
+		// c.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "https://debukatu-frontend2-for-deploy.vercel.app")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type")
